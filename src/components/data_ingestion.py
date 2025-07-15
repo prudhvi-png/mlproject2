@@ -5,6 +5,7 @@ import os
 from dataclasses import dataclass
 from sklearn.model_selection import train_test_split
 import sys
+from data_transformation import DataTransformation
 
 
 @dataclass
@@ -23,7 +24,7 @@ class DataIngestion:
         try:
 
 
-            df = pd.read_csv("Data\Iris.csv")
+            df = pd.read_csv("notebooks\\Data\\Iris.csv")
 
             logging.info("read the dataset as DataFrame")
 
@@ -51,5 +52,10 @@ class DataIngestion:
 
 
 if __name__ == "__main__":
-    obj = DataIngestion()
-    train_data,test_data = obj.initiate_data_ingestion()
+    data_ingestion_obj = DataIngestion()
+    train_data,test_data = data_ingestion_obj.initiate_data_ingestion()
+
+    data_transform_obj = DataTransformation()
+    train_arr, test_arr, preprocessor_path = data_transform_obj.initiate_data_transfromation(train_data, test_data)
+
+
