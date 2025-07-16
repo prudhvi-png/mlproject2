@@ -7,6 +7,8 @@ from sklearn.model_selection import train_test_split
 import sys
 from data_transformation import DataTransformation
 from sklearn.preprocessing import LabelEncoder
+from model_trainer import ModelTrainer
+
 
 
 
@@ -69,6 +71,9 @@ if __name__ == "__main__":
     test_arr,train_arr,preprocessor_obj=data_transform_obj.initiate_data_transfromation(train_data,test_data)
     df = pd.DataFrame(test_arr)
     print(df)
+    train_model = ModelTrainer()
+    best_score = train_model.initiate_model_training(train_arr,test_arr)
+    print(best_score)
     
 
 
