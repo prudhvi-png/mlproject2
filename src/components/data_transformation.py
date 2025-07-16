@@ -11,6 +11,7 @@ from src.exception import CustomException
 from src.logger import logging
 from src.utils import save_object
 from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import LabelEncoder
 
 
 @dataclass
@@ -21,12 +22,15 @@ class DataTransformation:
     def __init__(self):
         self.data_transformation_config = DataTransformationConfig()
     
-    def get_data_transfer_object(self):
+    def get_data_transform_object(self):
 
         """This Function is responsible for data transformation"""
 
         try:
             columns = ['Id', 'SepalLengthCm', 'SepalWidthCm', 'PetalLengthCm', 'PetalWidthCm']
+
+
+            target_column =["Species"]
 
             num_pipeline = Pipeline(
                 steps=[("scaler",StandardScaler())]
@@ -36,6 +40,7 @@ class DataTransformation:
 
             preprocessor = ColumnTransformer([
                 ("num_pipeline",num_pipeline,columns)
+
             ])
             
             return preprocessor
@@ -49,11 +54,12 @@ class DataTransformation:
         try:
             train_df = pd.read_csv(train_path)
             test_df = pd.read_csv(test_path)
+
             
             logging.info("Read train and test data completed! ")
             logging.info("Obtaining preprocessor object ")
 
-            preprocessor_obj = self.get_data_transfer_object()    # We are taking preprocessor object
+            preprocessor_obj = self.get_data_transform_object()    # We are taking preprocessor object
 
             target_column_name = 'Species'
             columns = ['Id', 'SepalLengthCm', 'SepalWidthCm', 'PetalLengthCm', 'PetalWidthCm']

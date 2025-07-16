@@ -6,6 +6,8 @@ from dataclasses import dataclass
 from sklearn.model_selection import train_test_split
 import sys
 from data_transformation import DataTransformation
+from sklearn.preprocessing import LabelEncoder
+
 
 
 @dataclass
@@ -25,6 +27,14 @@ class DataIngestion:
 
 
             df = pd.read_csv("notebooks\\Data\\Iris.csv")
+
+            x=df.drop("Species",axis=1)
+            y= df["Species"]
+
+            encoder = LabelEncoder()
+            y = pd.DataFrame(encoder.fit_transform(y),columns=["Species"])
+
+            df = pd.concat([x, y], axis=1)
 
             logging.info("read the dataset as DataFrame")
 
@@ -56,6 +66,9 @@ if __name__ == "__main__":
     train_data,test_data = data_ingestion_obj.initiate_data_ingestion()
 
     data_transform_obj = DataTransformation()
-    train_arr, test_arr, preprocessor_path = data_transform_obj.initiate_data_transfromation(train_data, test_data)
+    test_arr,train_arr,preprocessor_obj=data_transform_obj.initiate_data_transfromation(train_data,test_data)
+    df = pd.DataFrame(test_arr)
+    print(df)
+    
 
 
